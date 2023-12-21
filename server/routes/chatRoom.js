@@ -1,15 +1,10 @@
-import express from "express";
-
-import {
-  createChatRoom,
-  getChatRoomOfUser,
-  getChatRoomOfUsers,
-} from "../controllers/chatRoom.js";
+const express = require("express");
+const chatRoomController = require("../controllers/chatRoom.js");
 
 const router = express.Router();
 
-router.post("/", createChatRoom);
-router.get("/:userId", getChatRoomOfUser);
-router.get("/:firstUserId/:secondUserId", getChatRoomOfUsers);
+router.post("/", chatRoomController.createChatRoom);
+router.get("/:userId", chatRoomController.getChatRoomOfUser);
+router.get("/:firstUserId/:secondUserId", chatRoomController.getChatRoomOfUsers);
 
-export default router;
+module.exports = router;

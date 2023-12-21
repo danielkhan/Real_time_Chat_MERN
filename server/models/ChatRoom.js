@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+const mongoose = require("mongoose");
 
 const ChatRoomSchema = mongoose.Schema(
   {
@@ -9,4 +9,4 @@ const ChatRoomSchema = mongoose.Schema(
 
 const ChatRoom = mongoose.model("ChatRoom", ChatRoomSchema);
 
-export default ChatRoom;
+module.exports = ChatRoom;

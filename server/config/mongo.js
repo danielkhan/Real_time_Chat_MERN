@@ -1,5 +1,5 @@
-import mongoose from "mongoose";
-import dotenv from "dotenv";
+const mongoose = require("mongoose");
+const dotenv = require("dotenv");
 
 dotenv.config();
 
@@ -11,7 +11,7 @@ mongoose.connect(MONGO_URI, {
 });
 
 mongoose.connection.on("connected", () => {
-  console.log("Mongo has connected succesfully");
+  console.log("Mongo has connected successfully");
 });
 mongoose.connection.on("reconnected", () => {
   console.log("Mongo has reconnected");

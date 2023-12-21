@@ -1,6 +1,6 @@
-import auth from "../config/firebase-config.js";
+const auth = require("../config/firebase-config.js");
 
-export const VerifyToken = async (req, res, next) => {
+const VerifyToken = async (req, res, next) => {
   const token = req.headers.authorization.split(" ")[1];
 
   try {
@@ -14,7 +14,7 @@ export const VerifyToken = async (req, res, next) => {
   }
 };
 
-export const VerifySocketToken = async (socket, next) => {
+const VerifySocketToken = async (socket, next) => {
   const token = socket.handshake.auth.token;
 
   try {
@@ -22,10 +22,11 @@ export const VerifySocketToken = async (socket, next) => {
 
     if (decodeValue) {
       socket.user = decodeValue;
-
       return next();
     }
   } catch (e) {
     return next(new Error("Internal Error"));
   }
 };
+
+module.exports = { VerifyToken, VerifySocketToken };

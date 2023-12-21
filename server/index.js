@@ -1,24 +1,21 @@
-import Sentry from '@sentry/node-experimental';
-dotenv.config();
+const Sentry = require('@sentry/node-experimental');
+const dotenv = require('dotenv').config();
 Sentry.init({
   dsn: process.env.SENTRY_SERVER_DSN,
   tracesSampleRate: 1.0,
+  debug: true,
 });
 
-import express from "express";
-import cors from "cors";
-import dotenv from "dotenv";
-import { Server } from "socket.io";
-import "./config/mongo.js";
+const express = require('express');
+const cors = require('cors');
+require('./config/mongo');
 
-import { VerifyToken, VerifySocketToken } from "./middlewares/VerifyToken.js";
-import chatRoomRoutes from "./routes/chatRoom.js";
-import chatMessageRoutes from "./routes/chatMessage.js";
-import userRoutes from "./routes/user.js";
+const {VerifyToken, VerifySocketToken} = require('./middlewares/VerifyToken');
+const chatRoomRoutes = require('./routes/chatRoom');
+const chatMessageRoutes = require('./routes/chatMessage');
+const userRoutes = require('./routes/user');
 
 const app = express();
-
-
 
 app.use(cors());
 app.use(express.json());
@@ -28,17 +25,18 @@ app.use(VerifyToken);
 
 const PORT = process.env.PORT || 8080;
 
-app.use("/api/room", chatRoomRoutes);
-app.use("/api/message", chatMessageRoutes);
-app.use("/api/user", userRoutes);
+app.use('/api/room', chatRoomRoutes);
+app.use('/api/message', chatMessageRoutes);
+app.use('/api/user', userRoutes);
 
 const server = app.listen(PORT, () => {
   console.log(`Server listening on port ${PORT}`);
 });
 
+const { Server } = require('socket.io');
 const io = new Server(server, {
   cors: {
-    origin: "http://localhost:3000",
+    origin: 'http://localhost:3000',
     credentials: true,
   },
 });
@@ -53,26 +51,26 @@ const getKey = (map, val) => {
   }
 };
 
-io.on("connection", (socket) => {
+io.on('connection', (socket) => {
   global.chatSocket = socket;
 
-  socket.on("addUser", (userId) => {
+  socket.on('addUser', (userId) => {
     onlineUsers.set(userId, socket.id);
-    socket.emit("getUsers", Array.from(onlineUsers));
+    socket.emit('getUsers', Array.from(onlineUsers));
   });
 
-  socket.on("sendMessage", ({ senderId, receiverId, message }) => {
+  socket.on('sendMessage', ({ senderId, receiverId, message }) => {
     const sendUserSocket = onlineUsers.get(receiverId);
     if (sendUserSocket) {
-      socket.to(sendUserSocket).emit("getMessage", {
+      socket.to(sendUserSocket).emit('getMessage', {
         senderId,
         message,
       });
     }
   });
 
-  socket.on("disconnect", () => {
+  socket.on('disconnect', () => {
     onlineUsers.delete(getKey(onlineUsers, socket.id));
-    socket.emit("getUsers", Array.from(onlineUsers));
+    socket.emit('getUsers', Array.from(onlineUsers));
   });
 });

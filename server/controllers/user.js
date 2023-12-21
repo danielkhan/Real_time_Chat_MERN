@@ -1,6 +1,6 @@
-import auth from "../config/firebase-config.js";
+const auth = require("../config/firebase-config.js");
 
-export const getAllUsers = async (req, res) => {
+const getAllUsers = async (req, res) => {
   const maxResults = 10;
   let users = [];
 
@@ -17,7 +17,7 @@ export const getAllUsers = async (req, res) => {
   }
 };
 
-export const getUser = async (req, res) => {
+const getUser = async (req, res) => {
   try {
     const userRecord = await auth.getUser(req.params.userId);
 
@@ -28,3 +28,5 @@ export const getUser = async (req, res) => {
     console.log(error);
   }
 };
+
+module.exports = { getAllUsers, getUser };

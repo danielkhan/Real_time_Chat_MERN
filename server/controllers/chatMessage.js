@@ -1,6 +1,6 @@
-import ChatMessage from "../models/ChatMessage.js";
+const ChatMessage = require("../models/ChatMessage.js");
 
-export const createMessage = async (req, res) => {
+const createMessage = async (req, res) => {
   const newMessage = new ChatMessage(req.body);
 
   try {
@@ -13,7 +13,7 @@ export const createMessage = async (req, res) => {
   }
 };
 
-export const getMessages = async (req, res) => {
+const getMessages = async (req, res) => {
   try {
     const messages = await ChatMessage.find({
       chatRoomId: req.params.chatRoomId,
@@ -25,3 +25,5 @@ export const getMessages = async (req, res) => {
     });
   }
 };
+
+module.exports = { createMessage, getMessages };

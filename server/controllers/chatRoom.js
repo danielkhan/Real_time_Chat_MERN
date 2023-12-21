@@ -1,6 +1,6 @@
-import ChatRoom from "../models/ChatRoom.js";
+const ChatRoom = require("../models/ChatRoom.js");
 
-export const createChatRoom = async (req, res) => {
+const createChatRoom = async (req, res) => {
   const newChatRoom = new ChatRoom({
     members: [req.body.senderId, req.body.receiverId],
   });
@@ -15,7 +15,7 @@ export const createChatRoom = async (req, res) => {
   }
 };
 
-export const getChatRoomOfUser = async (req, res) => {
+const getChatRoomOfUser = async (req, res) => {
   try {
     const chatRoom = await ChatRoom.find({
       members: { $in: [req.params.userId] },
@@ -28,7 +28,7 @@ export const getChatRoomOfUser = async (req, res) => {
   }
 };
 
-export const getChatRoomOfUsers = async (req, res) => {
+const getChatRoomOfUsers = async (req, res) => {
   try {
     const chatRoom = await ChatRoom.find({
       members: { $all: [req.params.firstUserId, req.params.secondUserId] },
@@ -40,3 +40,5 @@ export const getChatRoomOfUsers = async (req, res) => {
     });
   }
 };
+
+module.exports = { createChatRoom, getChatRoomOfUser, getChatRoomOfUsers };

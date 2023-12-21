@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+const mongoose = require("mongoose");
 
 const ChatMessageSchema = mongoose.Schema(
   {
@@ -11,4 +11,4 @@ const ChatMessageSchema = mongoose.Schema(
 
 const ChatMessage = mongoose.model("ChatMessage", ChatMessageSchema);
 
-export default ChatMessage;
+module.exports = ChatMessage;
