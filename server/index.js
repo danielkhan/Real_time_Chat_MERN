@@ -1,8 +1,14 @@
+import Sentry from '@sentry/node-experimental';
+dotenv.config();
+Sentry.init({
+  dsn: process.env.SENTRY_SERVER_DSN,
+  tracesSampleRate: 1.0,
+});
+
 import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
 import { Server } from "socket.io";
-
 import "./config/mongo.js";
 
 import { VerifyToken, VerifySocketToken } from "./middlewares/VerifyToken.js";
@@ -12,7 +18,7 @@ import userRoutes from "./routes/user.js";
 
 const app = express();
 
-dotenv.config();
+
 
 app.use(cors());
 app.use(express.json());
